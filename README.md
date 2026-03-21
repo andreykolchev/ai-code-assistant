@@ -1,74 +1,85 @@
-# air-quarkus
+# AI Code Assistant
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A smart CLI assistant for Java code analysis built with Quarkus, Ollama, and Qdrant. This tool indexes your Java project's methods into a vector database and allows you to ask questions about your codebase using a Large Language Model (LLM).
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Features
 
-## Running the application in dev mode
+- **Project Indexing**: Automatically parses Java files and extracts method declarations using JavaParser.
+- **Vector Search**: Generates embeddings for code snippets and stores them in Qdrant for efficient similarity search.
+- **Context-Aware Chat**: Uses RAG (Retrieval-Augmented Generation) to provide accurate answers about your code by retrieving relevant context before querying the LLM.
+- **CLI Interface**: Easy-to-use command-line interface powered by Picocli.
 
-You can run your application in dev mode that enables live coding using:
+## Tech Stack
 
-```shell script
-./mvnw quarkus:dev
+- **Framework**: [Quarkus](https://quarkus.io/)
+- **CLI**: [Picocli](https://picocli.info/)
+- **LLM Engine**: [Ollama](https://ollama.com/) (Models: `qwen2.5-coder:3b` for chat, `nomic-embed-text` for embeddings)
+- **Vector Database**: [Qdrant](https://qdrant.tech/)
+- **Java Parser**: [JavaParser](https://javaparser.org/)
+
+## Prerequisites
+
+- **Java 21** or higher
+- **Maven 3.9+**
+- **Docker & Docker Compose**
+- **Ollama** (running locally or in a container)
+
+## Getting Started
+
+### 1. Start Infrastructure
+
+Use Docker Compose to start Qdrant and Ollama:
+
+```bash
+docker-compose up -d
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+### 2. Prepare AI Models
 
-## Packaging and running the application
+Pull the required models in Ollama:
 
-The application can be packaged using:
-
-```shell script
-./mvnw package
+```bash
+docker exec -it ollama ollama pull nomic-embed-text
+docker exec -it ollama ollama pull qwen2.5-coder:3b
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### 3. Build the Project
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar -n "Gemini"`.
+Build the Quarkus application:
 
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```bash
+./mvnw clean package
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### 4. Run the Assistant
 
-## Creating a native executable
+Run the application and point it to the Java project you want to index:
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+```bash
+java -jar target/quarkus-app/quarkus-run.jar --path /path/to/your/java-project
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Or using Maven:
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+```bash
+./mvnw quarkus:dev -Dquarkus.args="--path /path/to/your/java-project"
 ```
 
-You can then execute your native executable with: `./target/air-quarkus-1.0.0-SNAPSHOT-runner`
+## Usage
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+Once started, the assistant will index all Java methods in the specified directory. After indexing, you can ask questions like:
 
-## Related Guides
+- "What does the `calculateTotal` method do?"
+- "Are there any methods that handle user authentication?"
+- "Explain how the database connection is initialized."
 
-- Picocli ([guide](https://quarkus.io/guides/picocli)): Develop command line applications with Picocli
+Type `exit` to quit the application.
 
-## Provided Code
+## Configuration
 
-### Picocli Example
+Settings can be adjusted in `src/main/resources/application.properties`:
 
-Hello and goodbye are civilization fundamentals. Let's not forget it with this example picocli application by changing the <code>command</code> and <code>parameters</code>.
-
-[Related guide section...](https://quarkus.io/guides/picocli#command-line-application-with-multiple-commands)
-
-Also for picocli applications the dev mode is supported. When running dev mode, the picocli application is executed and on press of the Enter key, is restarted.
-
-As picocli applications will often require arguments to be passed on the commandline, this is also possible in dev mode via:
-
-```shell script
-./mvnw quarkus:dev -Dquarkus.args='Quarky'
-```
+- `ollama.chat-model.model-id`: The LLM used for answering questions.
+- `ollama.embedding-model.model-id`: The model used for generating vector embeddings.
+- `quarkus.rest-client.ollama-api.url`: URL to your Ollama instance.
+- `qdrant.host` / `qdrant.port`: Connection details for Qdrant.

@@ -1,4 +1,4 @@
-package org.air.test;
+package org.aicodeassistant.test;
 
 public class Calculator {
     /**
