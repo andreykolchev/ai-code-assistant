@@ -1,0 +1,5 @@
+EmbeddingStore<TextSegment> embeddingStore = QdrantEmbeddingStore.builder()
+    .host("localhost")
+    .port(6334) // Используем gRPC порт для скорости
+    .collectionName("java-code-assistant")
+    .build();
