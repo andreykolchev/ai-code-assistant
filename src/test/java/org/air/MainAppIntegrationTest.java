@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -70,13 +69,13 @@ class MainAppIntegrationTest {
         try {
             String question = "What methods does the Calculator class have?";
             System.out.println("Asking question: " + question);
-            String response = assistant.chat(question);
+            String response = assistant.processQuestion(question);
 
-            System.out.println("AI Response: " + response);
+            System.out.println("AI response: " + response);
 
             // 4. Verify the response
-            Assertions.assertNotNull(response, "Response should not be null");
-            Assertions.assertFalse(response.isBlank(), "Response should not be empty");
+            Assertions.assertNotNull(response, "response should not be null");
+            Assertions.assertFalse(response.isBlank(), "response should not be empty");
         } catch (Exception e) {
             System.out.println("Could not complete integration test (Ollama/Qdrant likely down): " + e.getMessage());
         }

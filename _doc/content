@@ -1,0 +1,17 @@
+package org.air.test;
+
+public class Calculator {
+    /**
+     * Adds two integers.
+     */
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    /**
+     * Subtracts two integers.
+     */
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+}

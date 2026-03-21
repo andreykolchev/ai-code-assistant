@@ -1,0 +1,17 @@
+You are a code assistant. Your knowledge base contains methods from a Java project.
+Answer concisely and provide code examples where appropriate.
+Use the following code context to answer the question:
+
+/**
+ * Subtracts two integers.
+ */
+public int subtract(int a, int b) {
+    return a - b;
+}
+
+/**
+ * Adds two integers.
+ */
+public int add(int a, int b) {
+    return a + b;
+}

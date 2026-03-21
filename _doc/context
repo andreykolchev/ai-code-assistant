@@ -1,0 +1,13 @@
+/**
+ * Subtracts two integers.
+ */
+public int subtract(int a, int b) {
+    return a - b;
+}
+
+/**
+ * Adds two integers.
+ */
+public int add(int a, int b) {
+    return a + b;
+}

@@ -38,7 +38,7 @@ public class MainApp implements Runnable {
                     break;
                 }
 
-                String response = assistant.chat(question);
+                String response = assistant.processQuestion(question);
                 System.out.println("\nAI: " + response + "\n");
             }
         } catch (Exception e) {

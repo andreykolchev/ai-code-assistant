@@ -43,7 +43,7 @@ public class CodeAssistant {
         qdrantClient = new QdrantClient(QdrantGrpcClient.newBuilder(qdrantHost, qdrantPort, false).build());
     }
 
-    public String chat(String question) throws ExecutionException, InterruptedException {
+    public String processQuestion(String question) throws ExecutionException, InterruptedException {
         // 1. Generate embedding for the question
         var embeddingResponse = ollamaClient.getEmbedding(new OllamaClient.EmbeddingRequest(embeddingModel, question));
         List<Float> questionVector = embeddingResponse.embedding;
@@ -59,7 +59,12 @@ public class CodeAssistant {
         ).get();
 
         String context = results.stream()
-            .map(result -> result.getPayloadMap().get("content").getStringValue())
+            .map(result -> {
+                var payload = result.getPayloadMap();
+                if (payload.containsKey("content")) return payload.get("content").getStringValue();
+                if (payload.containsKey("text_segment")) return payload.get("text_segment").getStringValue();
+                return "";
+            })
             .collect(Collectors.joining("\n\n"));
 
         // 3. Construct prompt and call LLM

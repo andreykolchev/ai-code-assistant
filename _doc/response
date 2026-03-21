@@ -1,0 +1,5 @@
+The Calculator class has two methods:
+
+1. subtract(int a, int b): This method takes two integer parameters and returns their difference.
+
+2. add(int a, int b): This method takes two integer parameters and returns their sum.
