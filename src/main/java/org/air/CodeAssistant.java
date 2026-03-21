@@ -9,6 +9,7 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import io.quarkus.arc.Unremovable;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
@@ -29,6 +30,7 @@ public interface CodeAssistant {
 
         @Produces
         @ApplicationScoped
+        @Unremovable
         public RetrievalAugmentor create(EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore) {
             return DefaultRetrievalAugmentor.builder()
                     .contentRetriever(EmbeddingStoreContentRetriever.builder()
