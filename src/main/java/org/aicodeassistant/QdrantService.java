@@ -1,5 +1,6 @@
 package org.aicodeassistant;
 
+import io.qdrant.client.QdrantClient;
 import io.qdrant.client.QdrantGrpcClient;
 import io.qdrant.client.grpc.Collections;
 import jakarta.annotation.PostConstruct;
@@ -25,20 +26,20 @@ public class QdrantService {
     @ConfigProperty(name = "qdrant.collection.dimension")
     int dimension;
 
-    private io.qdrant.client.QdrantClient qdrantClient;
+    private QdrantClient qdrantClient;
 
     @PostConstruct
     void init() throws ExecutionException, InterruptedException {
         qdrantClient = new io.qdrant.client.QdrantClient(QdrantGrpcClient.newBuilder(qdrantHost, qdrantPort, false).build());
 
-        // Check if collection exists, if not create it
+        // Check if the collection exists (if not create it)
         List<String> collections = qdrantClient.listCollectionsAsync().get();
         if (!collections.contains(collectionName)) {
             qdrantClient.createCollectionAsync(collectionName,
-                Collections.VectorParams.newBuilder()
-                    .setDistance(Collections.Distance.Cosine)
-                    .setSize(dimension)
-                    .build()
+                    Collections.VectorParams.newBuilder()
+                            .setDistance(Collections.Distance.Cosine)
+                            .setSize(dimension)
+                            .build()
             ).get();
         }
     }

@@ -20,12 +20,12 @@ import static io.qdrant.client.VectorsFactory.vectors;
 @ApplicationScoped
 public class CodeIndexer {
 
+    @ConfigProperty(name = "ollama.embedding-model")
+    String embeddingModel;
+
     @Inject
     @RestClient
     OllamaClient ollamaClient;
-
-    @ConfigProperty(name = "ollama.embedding-model.model-id")
-    String embeddingModel;
 
     @Inject
     QdrantService qdrantService;

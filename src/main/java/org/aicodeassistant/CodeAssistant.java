@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class CodeAssistant {
 
-    @ConfigProperty(name = "ollama.chat-model.model-id")
+    @ConfigProperty(name = "ollama.chat-model")
     String chatModel;
 
-    @ConfigProperty(name = "ollama.embedding-model.model-id")
+    @ConfigProperty(name = "ollama.embedding-model")
     String embeddingModel;
 
     @Inject
@@ -25,6 +25,9 @@ public class CodeAssistant {
     @Inject
     @RestClient
     OllamaClient ollamaClient;
+
+//    @Inject
+//    GeminiClient geminiClient;
 
     public String processQuestion(String question) {
         try {
@@ -68,6 +71,9 @@ public class CodeAssistant {
                 return "Error: Ollama returned an empty chat response.";
             }
             return chatResponse.message.content;
+            //Gemini integration as na option
+            //return geminiClient.chat(messages.stream().map(m->m.content).toList().toString());
+
         } catch (Exception e) {
             return "Error processing question: " + e.getMessage();
         }
