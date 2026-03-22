@@ -1,5 +1,1 @@
-EmbeddingStore<TextSegment> embeddingStore = QdrantEmbeddingStore.builder()
-    .host("localhost")
-    .port(6334) // Используем gRPC порт для скорости
-    .collectionName("java-code-assistant")
-    .build();
+java -jar target/quarkus-app/quarkus-run.jar --path /path/to/your/java-project/Users/andriikolchev/IdeaProjects/2026/ai-code-assistant/Users/andriikolchev/IdeaProjects/2026/ai-code-assistant/src/main/java/org/aicodeassistant
